@@ -1,4 +1,4 @@
-import { getPostByPostId } from '../../../../lib/posts'
+import { getPostById } from '../../../../lib/posts'
 import { notFound } from 'next/navigation'
 
 type Props = {
@@ -6,14 +6,14 @@ type Props = {
 }
 
 export async function generateMetadata({ params }: Props) {
-  const post = await getPostByPostId(params.postId)
+  const post = await getPostById(params.postId)
   return {
     title: post ? `${post.title} | My Blog` : 'Post not found',
   }
 }
 
-export default async function BlogPostPage({ params }: Props) {
-  const post = await getPostByPostId(params.postId)
+export default async function Post({ params }: Props) {
+  const post = await getPostById(params.postId)
 
   if (!post) return notFound()
 

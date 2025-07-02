@@ -1,15 +1,14 @@
-import Link from 'next/link';
-import { posts } from '../../../lib/posts';
+import Link from "next/link";
+import { posts } from "../../../lib/posts";
+import PostCard from "../../../components/PostCard";
 
 export default function PostsList() {
   return (
-    <main style={{ padding: '1rem' }}>
-      <h1>Blog Posts</h1>
+    <main style={{ padding: "1rem" }}>
+      <h1>All Posts</h1>
       <ul>
-        {posts.map(post => (
-          <li key={post.postId}>
-            <Link href={`/posts/${post.postId}`}>{post.title}</Link>
-          </li>
+        {posts.map((post) => (
+          <PostCard key={post.postId} post={post} />
         ))}
       </ul>
     </main>
