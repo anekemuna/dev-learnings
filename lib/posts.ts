@@ -1,32 +1,55 @@
-export interface Post {
-  postId: string;
-  title: string;
-  summary: string;
-  content: string;
+import { supabase } from "./supabaseClient";
+
+// export interface Post {
+//   id: string;
+//   title: string;
+//   summary: string;
+//   content: string;
+//   created_at: string;
+// }
+
+/**
+ *  Returns a list of blog posts from Supabase
+ * @returns An array of post objects.
+ * @throws Throws an error if fetching fails.
+ */
+export async function getPosts() {
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) {
+    console.error("Error fetching posts:", error.message);
+    return [];
+  }
+
+  return (
+    data?.map((post) => ({
+      id: post.id,
+      title: post.title ?? 'Untitled',
+      summary: post.summary ?? '',
+      content: post.content ?? '',
+      created_at: post.created_at,
+    })) ?? []
+  );
 }
 
-// Mock blog post data
-export const posts: Post[] = [
-  {
-    postId: "first-post",
-    title: "My First Post",
-    summary: "Preview Text ...",
-    content: "This is the content of the first post.",
-  },
-  {
-    postId: "second-post",
-    title: "My Second Post",
-    summary: "Preview Text ...",
-    content: "This is the content of the second post.",
-  },
-  {
-    postId: "third-post",
-    title: "My Third Post",
-    summary: "Preview Text ...",
-    content: "This is the content of the third post.",
-  },
-];
+/**
+ * Fetches a single post by its ID.
+ *
+ * @param id - The ID of the post to fetch.
+ * @returns The post object if found, or null.
+ */
+export async function getPostById(id: string) {
+  const { data, error } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) {
+    console.error("Error fetching post:", error.message);
+    return null;
+  }
 
-export function getPostById(postId: string) {
-  return posts.find((post) => post.postId === postId);
+  return data;
 }

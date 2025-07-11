@@ -1,15 +1,16 @@
-import { Post } from "../lib/posts";
 import Link from "next/link";
 
-interface Props {
-  post: Post;
+interface Post {
+  id: string;
+  title: string;
+  summary: string;
 }
 
-export default function PostCard({ post }: Props) {
+export default function PostCard({ post }: {post: Post}) {
   return (
     <article>
       <h2>
-        <Link href={`/posts/${post.postId}`}>{post.title}</Link>
+        <Link href={`/posts/${post.id}`}>{post.title}</Link>
       </h2>
       <p>{post.summary}</p>
     </article>
