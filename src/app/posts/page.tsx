@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { getPosts } from "../../../lib/posts";
-import PostCard from "../../../components/PostCard";
+import { getPosts } from "@/libs/posts";
+import PostCard from "@/components/PostCard";
 
 export default async function PostsList() {
   const posts = await getPosts();
