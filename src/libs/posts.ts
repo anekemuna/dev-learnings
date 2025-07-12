@@ -13,7 +13,7 @@ import { supabase } from "./supabaseClient";
  * @returns An array of post objects.
  * @throws Throws an error if fetching fails.
  */
-export async function getPosts() {
+export async function getAllPosts() {
   const { data, error } = await supabase
     .from("posts")
     .select("*")
