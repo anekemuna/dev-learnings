@@ -1,5 +1,9 @@
 import Link from "next/link";
 
+/**
+ * Renders home page
+ * @returns Rendered Home Page (JSX.Element)
+ */
 export default function HomePage() {
   return (
     <main style={{ padding: "2rem" }}>

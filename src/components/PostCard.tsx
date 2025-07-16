@@ -6,7 +6,13 @@ interface Post {
   summary: string;
 }
 
-export default function PostCard({ post }: {post: Post}) {
+/**
+ * Renders a clickable card based on the post
+ *
+ * @param post: takes a post data from the database
+ * @returns : rendered JSX.Element
+ */
+export default function PostCard({ post }: { post: Post }) {
   return (
     <article>
       <h2>
