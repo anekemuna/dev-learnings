@@ -2,6 +2,10 @@ import Link from "next/link";
 import { getAllPosts } from "@/libs/posts";
 import PostCard from "@/components/PostCard";
 
+/**
+ *
+ * @returns JSX.Element rendering of post object into cards
+ */
 export default async function PostsList() {
   const posts = await getAllPosts();
   return (

@@ -12,6 +12,11 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
+/**
+ *
+ * @param param0 : Post
+ * @returns
+ */
 export default async function Post({ params }: Props) {
   const post = await getPostById(params.postId);
 

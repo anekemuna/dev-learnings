@@ -1,3 +1,9 @@
+/**
+ * Admin page to manage all blog posts.
+ * Displays a list of posts with options to edit or delete,
+ * and includes a logout button and a link to create a new post.
+ */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,13 +14,17 @@ import { useRouter } from "next/navigation";
 export default function AdminPosts() {
   const router = useRouter();
 
-  const [posts, setPosts] = useState<any[]>([]);
-  const [message, setMessage] = useState("");
+  const [posts, setPosts] = useState<any[]>([]); // fetched posts
+  const [message, setMessage] = useState(""); // success/ error message
 
+  // Fetch posts when the component mounts
   useEffect(() => {
     fetchPosts();
   }, []);
 
+  /**
+   * Fetches all posts from Supabase and updates state.
+   */
   const fetchPosts = async () => {
     const { data } = await supabase
       .from("posts")
@@ -23,6 +33,11 @@ export default function AdminPosts() {
     if (data) setPosts(data);
   };
 
+  /**
+   * Deletes a post from the database after user confirmation.
+   *
+   * @param id - ID of the post to delete
+   */
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this post?")) return;
     const { error } = await supabase.from("posts").delete().eq("id", id);
@@ -32,6 +47,9 @@ export default function AdminPosts() {
     }
   };
 
+  /**
+   * Logs the user out and redirects to the admin login page.
+   */
   const handleLogout = async () => {
     await supabase.auth.signOut();
     router.push("/admin"); // Back to login
@@ -51,6 +69,7 @@ export default function AdminPosts() {
           >
             + Create
           </Link>
+          {/* Logout Button */}
           <button
             onClick={handleLogout}
             className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition"
@@ -60,6 +79,7 @@ export default function AdminPosts() {
         </div>
       </div>
 
+      {/* Display success message */}
       {message && (
         <p className="text-green-600 mb-4 font-medium bg-green-50 border border-green-200 p-2 rounded">
           {message}
@@ -74,12 +94,14 @@ export default function AdminPosts() {
             </h3>
             <p className="text-sm text-gray-600 mb-2">{post.summary}</p>
             <div className="flex gap-3">
+              {/* Edit Button */}
               <Link
                 href={`/admin/edit/${post.id}`}
                 className="px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-sm"
               >
                 Edit
               </Link>
+              {/* Delete Button */}
               <button
                 onClick={() => handleDelete(post.id)}
                 className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-sm"
