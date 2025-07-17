@@ -6,21 +6,24 @@
 
 "use client";
 
+import { useAdminSession } from "@/hooks/useAdminSession";
 import { useEffect, useState } from "react";
 import { supabase } from "@/libs/supabaseClient";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function AdminPosts() {
+  const { session, loading } = useAdminSession(); // admin hook
+
   const router = useRouter();
 
   const [posts, setPosts] = useState<any[]>([]); // fetched posts
   const [message, setMessage] = useState(""); // success/ error message
 
-  // Fetch posts when the component mounts
+  // Fetch posts when the component mounts and admin status confirmed
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    if (!loading) fetchPosts();
+  }, [loading]);
 
   /**
    * Fetches all posts from Supabase and updates state.
@@ -54,6 +57,8 @@ export default function AdminPosts() {
     await supabase.auth.signOut();
     router.push("/admin"); // Back to login
   };
+
+  if (loading) return <p className="p-4">Loading...</p>; // prevent flicker or unauthorized access
 
   return (
     <div className="p-4 max-w-4xl mx-auto">

@@ -9,11 +9,13 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { supabase } from "@/libs/supabaseClient";
+import { useAdminSession } from "@/hooks/useAdminSession";
 
 export default function EditPost() {
+  const { session, loading } = useAdminSession();
   const { id } = useParams<{ id: string }>(); // post id from route params
   const router = useRouter();
-  
+
   // Form Data
   const [form, setForm] = useState({ title: "", summary: "", content: "" });
   const [message, setMessage] = useState(""); // error message
@@ -40,7 +42,7 @@ export default function EditPost() {
   }, [id]);
 
   /**
-   * 
+   *
    * @param field : {string} name of the field being changed
    * @param value : {string} new value of field
    */
@@ -61,6 +63,8 @@ export default function EditPost() {
     if (!error) router.push("/admin/posts");
     else setMessage(error.message);
   };
+
+  if (loading) return <p className="p-4">Loading...</p>;
 
   return (
     <form
