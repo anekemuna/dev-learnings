@@ -9,8 +9,11 @@
 import { useState } from "react";
 import { supabase } from "@/libs/supabaseClient";
 import { useRouter } from "next/navigation";
+import { useAdminSession } from "@/hooks/useAdminSession";
 
 export default function CreatePost() {
+  const { session, loading } = useAdminSession();
+
   // Form State
   const [form, setForm] = useState({ title: "", summary: "", content: "" });
 
@@ -41,6 +44,8 @@ export default function CreatePost() {
       setMessage(error.message);
     }
   };
+
+  if (loading) return <p className="p-4">Loading...</p>;
 
   return (
     <form
